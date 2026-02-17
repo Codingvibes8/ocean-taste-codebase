@@ -49,7 +49,8 @@ export default async function Home() {
       <section className="relative py-12 sm:py-16 md:py-24 lg:py-32 min-h-[600px] sm:min-h-[700px] overflow-hidden">
         {/* Background Image */}
         <Image
-          src="https://images.unsplash.com/photo-1504674260159-40d1f6a?w=1920&q=80"
+          src="https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=1920&q=80"
+
           alt="Fresh fish and chips"
           fill
           priority
