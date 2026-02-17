@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { ShoppingBag } from 'lucide-react'
 import { useCartStore } from '@/lib/store/cart-store'
+import Image from 'next/image'
 
 interface ProductCardProps {
   product: Product
@@ -19,11 +20,12 @@ export function ProductCard({ product }: ProductCardProps) {
     <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-200 flex flex-col h-full">
       <div className="aspect-video bg-muted relative flex-shrink-0">
         {product.imageUrl ? (
-          <img
+          <Image
             src={product.imageUrl}
             alt={product.name}
-            className="object-cover w-full h-full"
-            loading="lazy"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover"
           />
         ) : (
           <div className="flex items-center justify-center w-full h-full">

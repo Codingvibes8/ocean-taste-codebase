@@ -10,6 +10,7 @@ import { ShoppingBag, Trash2, CreditCard, MapPin, Phone } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { toast } from '@/hooks/use-toast'
+import Image from 'next/image'
 
 export default function CheckoutPage() {
   const router = useRouter()
@@ -125,11 +126,13 @@ export default function CheckoutPage() {
                     {items.map((item) => (
                       <div key={item.product.id} className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4 p-3 sm:p-4 border rounded-lg">
                         <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden bg-muted flex-shrink-0">
-                          {item.product.image ? (
-                            <img
-                              src={item.product.image}
+                          {item.product.imageUrl ? (
+                            <Image
+                              src={item.product.imageUrl}
                               alt={item.product.name}
-                              className="object-cover w-full h-full"
+                              fill
+                              sizes="96px"
+                              className="object-cover"
                             />
                           ) : (
                             <div className="flex items-center justify-center w-full h-full">

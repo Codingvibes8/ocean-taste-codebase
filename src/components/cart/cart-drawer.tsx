@@ -13,6 +13,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
 import { Minus, Plus, Trash2, ShoppingBag } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 interface CartDrawerProps {
   open: boolean
@@ -64,11 +65,13 @@ export function CartDrawer({ open, onOpenChange }: CartDrawerProps) {
                   <div key={item.product.id} className="space-y-3 sm:space-y-4">
                     <div className="flex items-start gap-3 sm:gap-4">
                       <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden bg-muted flex-shrink-0">
-                        {item.product.image ? (
-                          <img
-                            src={item.product.image}
+                        {item.product.imageUrl ? (
+                          <Image
+                            src={item.product.imageUrl}
                             alt={item.product.name}
-                            className="object-cover w-full h-full"
+                            fill
+                            sizes="80px"
+                            className="object-cover"
                           />
                         ) : (
                           <div className="flex items-center justify-center w-full h-full">

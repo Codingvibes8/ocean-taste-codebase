@@ -1,33 +1,35 @@
 export interface Category {
-  id: number
+  id: string
   name: string
   slug: string
   description?: string | null
 }
 
 export interface Product {
-  id: number
+  id: string
   name: string
   slug: string
   description?: string | null
   price: number // Decimal in DB, but usually handled as number/string in frontend. Using number for simplicity if precision isn't critical for display, or string if using Decimal.
   originalPrice?: number | null
-  categoryId?: number | null
+  categoryId?: string | null
+  categorySlug: string
   imageUrl?: string | null
   isFeatured?: boolean | null
   isAvailable?: boolean | null
 }
 
+
 export interface CartItem {
-  id: number
+  id: string
   userId: string
-  productId?: number | null
+  productId?: string | null
   quantity: number
   product?: Product | null
 }
 
 export interface Order {
-  id: number
+  id: string
   userId: string
   totalAmount: number
   status?: string | null
@@ -43,10 +45,11 @@ export interface Order {
 }
 
 export interface OrderItem {
-  id: number
-  orderId?: number | null
-  productId?: number | null
+  id: string
+  orderId?: string | null
+  productId?: string | null
   quantity: number
   price: number
   product?: Product | null
 }
+

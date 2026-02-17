@@ -41,7 +41,7 @@ A full-stack restaurant website built with Next.js 16, featuring online ordering
 bun install
 ```
 
-2. Set up environment variables:
+1. Set up environment variables:
 
 Copy `.env.example` to `.env` and add your Supabase credentials:
 
@@ -50,29 +50,32 @@ NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
 
-3. Start the development server:
+1. Start the development server:
 
 ```bash
 bun run dev
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser
+1. Open [http://localhost:3000](http://localhost:3000) in your browser
 
 ## Environment Variables
 
 ### Supabase
+
 ```
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
 
 ### Stripe (Optional)
+
 ```
 STRIPE_SECRET_KEY=your_stripe_secret_key
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
 ```
 
 ### Application
+
 ```
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
@@ -98,14 +101,15 @@ CREATE TABLE categories (
 CREATE TABLE products (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   name TEXT NOT NULL,
+  slug TEXT NOT NULL UNIQUE,
   description TEXT NOT NULL,
   price DECIMAL NOT NULL,
-  image TEXT,
+  original_price DECIMAL,
+  image_url TEXT,
   category_slug TEXT NOT NULL,
   category_id UUID REFERENCES categories(id),
-  in_stock BOOLEAN DEFAULT true,
-  featured BOOLEAN DEFAULT false,
-  discount DECIMAL DEFAULT 0,
+  is_available BOOLEAN DEFAULT true,
+  is_featured BOOLEAN DEFAULT false,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -160,7 +164,39 @@ CREATE POLICY "Users can update own profile" ON profiles FOR UPDATE USING (auth.
 CREATE POLICY "Users can view own orders" ON orders FOR SELECT USING (auth.uid() = user_id);
 ```
 
-3. Insert sample data for categories and products using the mock data from `src/lib/mock-data.ts`
+1. Log in to your Supabase SQL editor and run the following to insert sample data:
+
+```sql
+-- Insert a category (Fish)
+INSERT INTO categories (id, name, slug, description, "order")
+VALUES ('550e8400-e29b-41d4-a716-446655440000', 'Fish', 'fish', 'Fresh fish options', 1);
+
+-- Insert Grilled Salmon (Fixes the reported error)
+INSERT INTO products (
+  name, 
+  slug, 
+  description, 
+  price, 
+  original_price, 
+  category_id, 
+  category_slug,
+  image_url, 
+  is_available, 
+  is_featured
+) VALUES (
+  'Grilled Salmon', 
+  'grilled-salmon', 
+  'Grilled Boneless salmon, perfectly cooked for a tender, flaky texture and rich flavor. With Chips, salads and 1 bread.', 
+  17.50, 
+  NULL, 
+  '550e8400-e29b-41d4-a716-446655440000', 
+  'fish',
+  '/placeholder.svg?height=300&width=400', 
+  true, 
+  true
+);
+
+```
 
 ## Project Structure
 
@@ -194,22 +230,26 @@ sushi-flex/
 ## Key Features
 
 ### Menu System
+
 - Dynamic menu with category filtering
 - Product cards with images, prices, discounts, and badges
 - Responsive grid layout
 
 ### Shopping Cart
+
 - Persistent cart with Zustand and localStorage
 - Real-time item quantity updates
 - Sliding cart drawer with checkout button
 
 ### Authentication Flow
+
 - Public browsing without sign-in
 - Sign-in required for checkout and orders
 - Protected routes for order history
 - Supabase Auth integration
 
 ### Payment Processing
+
 - Stripe integration ready
 - Secure payment intent creation
 - Order confirmation and tracking

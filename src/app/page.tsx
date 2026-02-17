@@ -4,6 +4,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Clock, Truck, Star, ChefHat, Menu as MenuIcon } from 'lucide-react'
 import { MenuSection } from '@/components/menu/menu-section'
 import { createClient } from '@/lib/supabase'
+import Image from 'next/image'
 
 export default async function Home() {
   const supabase = await createClient()
@@ -33,6 +34,7 @@ export default async function Home() {
     price: Number(p.price),
     originalPrice: p.original_price ? Number(p.original_price) : null,
     categoryId: p.category_id,
+    categorySlug: p.category_slug,
     imageUrl: p.image_url,
     isFeatured: p.is_featured,
     isAvailable: p.is_available,
@@ -40,16 +42,19 @@ export default async function Home() {
     updatedAt: p.updated_at
   }))
 
+
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
       <section className="relative py-12 sm:py-16 md:py-24 lg:py-32 min-h-[600px] sm:min-h-[700px] overflow-hidden">
         {/* Background Image */}
-        <img
+        <Image
           src="https://images.unsplash.com/photo-1504674260159-40d1f6a?w=1920&q=80"
           alt="Fresh fish and chips"
-          className="absolute inset-0 w-full h-full object-cover"
-          loading="eager"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
         />
         {/* Gradient Overlay */}
         <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/50 via-black/30 to-transparent min-h-[400px] sm:min-h-[500px]" />
