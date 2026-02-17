@@ -1,73 +1,52 @@
 export interface Category {
-  id: string
+  id: number
   name: string
   slug: string
-  description?: string
-  order: number
+  description?: string | null
 }
 
 export interface Product {
-  id: string
+  id: number
   name: string
-  description: string
-  price: number
-  image?: string
-  categorySlug: string
-  categoryId: string
-  inStock: boolean
-  featured: boolean
-  discount?: number
+  slug: string
+  description?: string | null
+  price: number // Decimal in DB, but usually handled as number/string in frontend. Using number for simplicity if precision isn't critical for display, or string if using Decimal.
+  originalPrice?: number | null
+  categoryId?: number | null
+  imageUrl?: string | null
+  isFeatured?: boolean | null
+  isAvailable?: boolean | null
 }
 
 export interface CartItem {
-  id: string
+  id: number
   userId: string
-  productId: string
+  productId?: number | null
   quantity: number
-  product: Product
+  product?: Product | null
 }
 
 export interface Order {
-  id: string
+  id: number
   userId: string
-  orderNumber: string
-  status: OrderStatus
-  total: number
-  subtotal: number
-  deliveryFee: number
-  tax: number
-  notes?: string
-  deliveryAddress?: string
-  phone?: string
-  paymentIntentId?: string
-  paymentStatus: PaymentStatus
+  totalAmount: number
+  status?: string | null
+  stripePaymentIntentId?: string | null
+  customerName?: string | null
+  customerEmail?: string | null
+  customerPhone?: string | null
+  deliveryAddress?: string | null
+  notes?: string | null
   createdAt: Date
   updatedAt: Date
   items: OrderItem[]
 }
 
 export interface OrderItem {
-  id: string
-  orderId: string
-  productId: string
+  id: number
+  orderId?: number | null
+  productId?: number | null
   quantity: number
   price: number
-  product: Product
-}
-
-export enum OrderStatus {
-  PENDING = 'PENDING',
-  CONFIRMED = 'CONFIRMED',
-  PREPARING = 'PREPARING',
-  READY = 'READY',
-  DELIVERED = 'DELIVERED',
-  CANCELLED = 'CANCELLED',
-}
-
-export enum PaymentStatus {
-  PENDING = 'PENDING',
-  PROCESSING = 'PROCESSING',
-  COMPLETED = 'COMPLETED',
-  FAILED = 'FAILED',
-  REFUNDED = 'REFUNDED',
+  product?: Product | null
 }

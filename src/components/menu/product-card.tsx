@@ -12,16 +12,15 @@ interface ProductCardProps {
 export function ProductCard({ product }: ProductCardProps) {
   const addItem = useCartStore((state) => state.addItem)
 
-  const discountedPrice = product.discount
-    ? product.price - product.discount
-    : product.price
+  const hasDiscount = product.originalPrice && product.originalPrice > product.price
+  const discountAmount = hasDiscount ? (product.originalPrice! - product.price) : 0
 
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-200 flex flex-col h-full">
       <div className="aspect-video bg-muted relative flex-shrink-0">
-        {product.image ? (
+        {product.imageUrl ? (
           <img
-            src={product.image}
+            src={product.imageUrl}
             alt={product.name}
             className="object-cover w-full h-full"
             loading="lazy"
@@ -32,12 +31,12 @@ export function ProductCard({ product }: ProductCardProps) {
           </div>
         )}
         <div className="absolute top-2 right-2 sm:top-3 sm:right-3 flex gap-1 sm:gap-2">
-          {product.featured && (
+          {product.isFeatured && (
             <Badge className="text-xs">Featured</Badge>
           )}
-          {product.discount && product.discount > 0 && (
+          {hasDiscount && (
             <Badge variant="secondary" className="text-xs">
-              Save £{product.discount.toFixed(2)}
+              Save £{discountAmount.toFixed(2)}
             </Badge>
           )}
         </div>
@@ -48,13 +47,13 @@ export function ProductCard({ product }: ProductCardProps) {
           {product.description}
         </p>
         <div className="flex items-center justify-between mb-3 sm:mb-4">
-          {product.discount && product.discount > 0 ? (
+          {hasDiscount ? (
             <div className="flex items-center gap-2">
               <span className="text-lg sm:text-xl font-bold" style={{ color: '#006994' }}>
-                £{discountedPrice.toFixed(2)}
+                £{product.price.toFixed(2)}
               </span>
               <span className="text-sm text-muted-foreground line-through">
-                £{product.price.toFixed(2)}
+                £{product.originalPrice!.toFixed(2)}
               </span>
             </div>
           ) : (
@@ -62,18 +61,18 @@ export function ProductCard({ product }: ProductCardProps) {
               £{product.price.toFixed(2)}
             </span>
           )}
-          {!product.inStock && (
+          {!product.isAvailable && (
             <Badge variant="destructive" className="text-xs">Out of Stock</Badge>
           )}
         </div>
         <Button
           className="w-full"
           style={{ backgroundColor: '#006994', color: '#ffffff' }}
-          disabled={!product.inStock}
+          disabled={!product.isAvailable}
           onClick={() => addItem(product)}
         >
           <ShoppingBag className="mr-2 h-4 w-4" />
-          {product.inStock ? 'Add to Cart' : 'Out of Stock'}
+          {product.isAvailable ? 'Add to Cart' : 'Out of Stock'}
         </Button>
       </CardContent>
     </Card>

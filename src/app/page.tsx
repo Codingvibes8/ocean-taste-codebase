@@ -1,22 +1,44 @@
-'use client'
-
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Clock, Truck, Star, ChefHat, Menu as MenuIcon } from 'lucide-react'
-import { useState, useMemo } from 'react'
-import { mockCategories, mockProducts } from '@/lib/mock-data'
-import { CategoryFilter } from '@/components/menu/category-filter'
-import { ProductCard } from '@/components/menu/product-card'
-import { Category, Product } from '@/lib/types'
+import { MenuSection } from '@/components/menu/menu-section'
+import { createClient } from '@/lib/supabase'
 
-export default function Home() {
-  const [activeCategory, setActiveCategory] = useState<string | null>(null)
+export default async function Home() {
+  const supabase = await createClient()
 
-  const filteredProducts = useMemo(() => {
-    if (!activeCategory) return mockProducts
-    return mockProducts.filter((product) => product.categorySlug === activeCategory)
-  }, [activeCategory])
+  // Fetch categories
+  const { data: categoriesData } = await supabase
+    .from('categories')
+    .select('*')
+    .order('id', { ascending: true })
+
+  const categories = categoriesData || []
+
+  // Fetch products
+  const { data: productsData } = await supabase
+    .from('products')
+    .select(`
+      *,
+      categories (*)
+    `)
+    .eq('is_available', true)
+
+  const products = (productsData || []).map(p => ({
+    id: p.id,
+    name: p.name,
+    slug: p.slug,
+    description: p.description,
+    price: Number(p.price),
+    originalPrice: p.original_price ? Number(p.original_price) : null,
+    categoryId: p.category_id,
+    imageUrl: p.image_url,
+    isFeatured: p.is_featured,
+    isAvailable: p.is_available,
+    createdAt: p.created_at,
+    updatedAt: p.updated_at
+  }))
 
   return (
     <div className="flex flex-col">
@@ -28,7 +50,6 @@ export default function Home() {
           alt="Fresh fish and chips"
           className="absolute inset-0 w-full h-full object-cover"
           loading="eager"
-          priority
         />
         {/* Gradient Overlay */}
         <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/50 via-black/30 to-transparent min-h-[400px] sm:min-h-[500px]" />
@@ -36,12 +57,12 @@ export default function Home() {
         <div className="container px-4 sm:px-6 lg:px-8 relative z-20">
           <div className="max-w-4xl mx-auto">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 md:mb-8 text-center md:text-left text-white drop-shadow-lg">
-              Fresh Fish & Chips
-              <span className="block text-white/90 mt-2 md:mt-0">Delivered to You</span>
+              Fresh Fish Grilled or Fried
+              <span className="block text-white/90 mt-2 md:mt-0">At you finger tips</span>
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-white/95 mb-8 md:mb-10 text-center md:text-left max-w-3xl mx-auto md:mx-0 drop-shadow-md">
-              Experience the best traditional fish & chips in town. Fresh ingredients,
-              crispy batter, and fast delivery right to your door.
+              Experience the best traditional fresh grilled or fried fish in town. Fresh ingredients,
+              crispy batter.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center md:justify-start">
               <Button
@@ -76,10 +97,10 @@ export default function Home() {
         <div className="container px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10 md:mb-12">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 md:mb-6">
-              Why Choose Sushi Flex?
+              Why Choose OceanTaste?
             </h2>
             <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto px-4 sm:px-0">
-              We're committed to providing the best fish & chips experience with quality,
+              We're committed to providing the best fried or grilledfresh fish experience with quality,
               taste, and convenience.
             </p>
           </div>
@@ -145,48 +166,17 @@ export default function Home() {
       </section>
 
       {/* Menu Section */}
-      <section id="menu" className="py-12 sm:py-16 md:py-20 lg:py-24 bg-muted/50">
-        <div className="container px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8 md:mb-12">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 md:mb-6">
-              Our Menu
-            </h2>
-            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto px-4 sm:px-0">
-              Explore our delicious selection of fish, chips, drinks, and more
-            </p>
-          </div>
-
-          <div className="mb-8 md:mb-10">
-            <CategoryFilter
-              categories={mockCategories}
-              activeCategory={activeCategory}
-              onCategoryChange={setActiveCategory}
-            />
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
-            {filteredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-
-          {filteredProducts.length === 0 && (
-            <div className="text-center py-16 md:py-20">
-              <p className="text-muted-foreground text-base sm:text-lg">No products found in this category.</p>
-            </div>
-          )}
-        </div>
-      </section>
+      <MenuSection categories={categories} products={products} />
 
       {/* About Section */}
       <section id="about" className="py-12 sm:py-16 md:py-20 lg:py-24">
         <div className="container px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 md:mb-8">
-              About Sushi Flex
+              About OceanTaste
             </h2>
             <p className="text-base sm:text-lg text-muted-foreground mb-6 leading-relaxed max-w-3xl mx-auto">
-              At Sushi Flex, we're passionate about bringing you the finest fish & chips experience.
+              At OceanTaste, we're passionate about bringing you the finest fish grilled or fried.
               Our journey started with a simple mission: to serve quality, delicious food that brings
               families and friends together.
             </p>
