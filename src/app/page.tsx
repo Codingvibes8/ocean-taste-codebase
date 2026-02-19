@@ -46,7 +46,7 @@ export default async function Home() {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative py-12 sm:py-16 md:py-24 lg:py-32 min-h-[600px] sm:min-h-[700px] overflow-hidden">
+      <section className="relative py-24 sm:py-32 md:py-40 min-h-screen overflow-hidden">
         {/* Background Image */}
         <Image
           src="https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=1920&q=80"
@@ -60,15 +60,15 @@ export default async function Home() {
         {/* Gradient Overlay */}
         <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/50 via-black/30 to-transparent min-h-[400px] sm:min-h-[500px]" />
 
-        <div className="container px-4 sm:px-6 lg:px-8 relative z-20">
-          <div className="max-w-4xl mx-auto">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 md:mb-8 text-center md:text-left text-white drop-shadow-lg">
-              Fresh Fish Grilled or Fried
-              <span className="block text-white/90 mt-2 md:mt-0">At you finger tips</span>
+        <div className="container px-4 sm:px-6 lg:px-8 relative z-20 flex flex-col items-center justify-center">
+          <div className="max-w-4xl  mx-auto">
+            <h1 className=" text-3xl text-white/90  sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 md:mb-8 text-center md:text-left text-white drop-shadow-lg">
+              Premium Fresh Fish,
+              <span className="block mt-2 md:mt-0 text-2xl sm:text-3xl md:text-4xl lg:text-5xl">Grilled or Fried to Perfection</span>
             </h1>
-            <p className="text-base sm:text-lg md:text-xl text-white/95 mb-8 md:mb-10 text-center md:text-left max-w-3xl mx-auto md:mx-0 drop-shadow-md">
-              Experience the best traditional fresh grilled or fried fish in town. Fresh ingredients,
-              crispy batter.
+            <p className="text-base text-white/80 sm:text-lg md:text-xl text-white/95 mb-8 md:mb-10 text-center md:text-left max-w-3xl mx-auto md:mx-0 drop-shadow-md">
+              Savor the finest traditional seafood, prepared fresh with premium ingredients. 
+              Whether you crave it perfectly grilled or golden-fried, we deliver excellence to your door.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center md:justify-start">
               <Button
