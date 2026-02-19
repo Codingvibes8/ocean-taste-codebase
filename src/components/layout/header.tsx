@@ -32,11 +32,8 @@ export function Header() {
         <div className="container px-4 sm:px-6 lg:px-8">
           <div className="flex h-14 md:h-16 items-center justify-between">
             {/* Logo */}
-            <Link href="/" className="flex items-center space-x-2 sm:space-x-3">
-              <div className="flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-lg" style={{ background: '#006994' }}>
-                <span className="text-lg sm:text-xl font-bold" style={{ color: '#ffffff' }}>SF</span>
-              </div>
-              <span className="text-base sm:text-lg font-bold hidden sm:inline-block">Sushi Flex</span>
+            <Link href="/" className="flex items-center space-x-2">
+         <span className="text-2xl text-blue-800 font-bold hidden sm:inline-block">OceanFlex</span>
             </Link>
 
             {/* Desktop Navigation */}

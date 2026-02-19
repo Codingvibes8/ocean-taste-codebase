@@ -12,7 +12,7 @@ export function Footer() {
               <div className="flex items-center justify-center w-10 h-10 rounded-lg" style={{ background: '#006994' }}>
                 <span className="text-lg sm:text-xl font-bold" style={{ color: '#ffffff' }}>SF</span>
               </div>
-              <span className="text-base sm:text-lg font-bold">Sushi Flex</span>
+              <span className="text-base sm:text-lg font-bold">OceanFlex</span>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
               Fresh fish & chips delivered to your door. Quality ingredients, great taste.
@@ -56,7 +56,7 @@ export function Footer() {
               </li>
               <li className="flex items-start space-x-3 text-sm text-muted-foreground">
                 <Mail className="h-4 w-4 flex-shrink-0 mt-0.5" />
-                <span>hello@sushiflex.com</span>
+                <span>hello@OceanFlex.com</span>
               </li>
               <li className="flex items-start space-x-3 text-sm text-muted-foreground">
                 <MapPin className="h-4 w-4 flex-shrink-0 mt-0.5" />
@@ -95,7 +95,7 @@ export function Footer() {
         </div>
 
         <div className="mt-10 md:mt-12 pt-8 border-t text-center text-sm text-muted-foreground">
-          <p className="px-4">&copy; {new Date().getFullYear()} Sushi Flex. All rights reserved.</p>
+          <p className="px-4">&copy; {new Date().getFullYear()} OceanFlex. All rights reserved.</p>
         </div>
       </div>
     </footer>

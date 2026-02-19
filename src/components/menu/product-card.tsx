@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Product } from '@/lib/types'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -16,16 +17,19 @@ export function ProductCard({ product }: ProductCardProps) {
   const hasDiscount = product.originalPrice && product.originalPrice > product.price
   const discountAmount = hasDiscount ? (product.originalPrice! - product.price) : 0
 
+  const [imgError, setImgError] = useState(false)
+
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-200 flex flex-col h-full">
       <div className="aspect-video bg-muted relative flex-shrink-0">
-        {product.imageUrl ? (
+        {product.imageUrl && !imgError ? (
           <Image
             src={product.imageUrl}
             alt={product.name}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-cover"
+            onError={() => setImgError(true)}
           />
         ) : (
           <div className="flex items-center justify-center w-full h-full">
